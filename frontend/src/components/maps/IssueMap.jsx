@@ -1,12 +1,40 @@
-import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import React, { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { StatusBadge } from '../issues/StatusBadge';
 import { PriorityIndicator } from '../issues/PriorityIndicator';
 import { Link } from 'react-router-dom';
-import { MapPin } from 'lucide-react';
+import { Navigation } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
-// Custom Marker Icons generator based on status & severity
+// Helper component to smoothly recenter Leaflet map when center prop changes
+function MapRecenter({ center, zoom }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center && Array.isArray(center) && center[0] && center[1]) {
+      map.setView(center, zoom, { animate: true });
+    }
+  }, [center, zoom, map]);
+  return null;
+}
+
+// User location marker pin generator
+const userLocationIcon = L.divIcon({
+  className: 'custom-user-location-pin',
+  html: `
+    <div style="position: relative; width: 32px; height: 32px;">
+      <div style="position: absolute; width: 32px; height: 32px; border-radius: 50%; background: rgba(99, 102, 241, 0.4); animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+      <div style="position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: #4f46e5; border: 3px solid #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); flex; align-items: center; justify-content: center;">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #ffffff; margin: 5px auto;"></div>
+      </div>
+    </div>
+  `,
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16],
+});
+
+// Custom Issue Marker Icons generator based on status & severity
 function createCustomMarkerIcon(status = 'OPEN', priorityScore = 50) {
   let color = '#2563eb'; // Blue for open
   if (status === 'UNDER_REVIEW') color = '#d97706'; // Amber
@@ -15,7 +43,7 @@ function createCustomMarkerIcon(status = 'OPEN', priorityScore = 50) {
   if (status === 'REJECTED') color = '#e11d48'; // Red
 
   const svgMarker = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" width="32" height="32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" width="34" height="34" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
       <circle cx="12" cy="10" r="3" fill="#ffffff"></circle>
     </svg>
@@ -24,27 +52,54 @@ function createCustomMarkerIcon(status = 'OPEN', priorityScore = 50) {
   return L.divIcon({
     className: 'custom-map-marker',
     html: svgMarker,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
+    iconSize: [34, 34],
+    iconAnchor: [17, 34],
+    popupAnchor: [0, -34],
   });
 }
 
 export function IssueMap({
   issues = [],
-  center = [37.774929, -122.419416],
+  center,
   zoom = 13,
   height = '500px',
   onMarkerSelect,
+  showUserMarker = true,
 }) {
+  const { userLocation, openLocationPrompt } = useAuth();
+  const activeCenter = center || [userLocation?.lat || 37.774929, userLocation?.lng || -122.419416];
+
   return (
-    <div style={{ height }} className="w-full relative rounded-xl overflow-hidden border border-slate-200 shadow-card">
-      <MapContainer center={center} zoom={zoom} scrollWheelZoom={true} className="w-full h-full">
+    <div style={{ height }} className="w-full relative rounded-2xl overflow-hidden border border-slate-200/80 dark:border-midnight-700/80 shadow-md dark:shadow-2xl">
+      <MapContainer center={activeCenter} zoom={zoom} scrollWheelZoom={true} className="w-full h-full">
+        <MapRecenter center={activeCenter} zoom={zoom} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
+        {/* User Default Location Marker */}
+        {showUserMarker && userLocation?.lat && userLocation?.lng && (
+          <Marker position={[userLocation.lat, userLocation.lng]} icon={userLocationIcon}>
+            <Popup>
+              <div className="p-2 space-y-1 font-sans text-xs">
+                <div className="flex items-center gap-1 font-bold text-brand-700">
+                  <Navigation className="w-3.5 h-3.5 text-brand-600" />
+                  <span>Your Default Location</span>
+                </div>
+                <p className="text-[11px] text-slate-600 font-semibold">{userLocation.cityName}</p>
+                <button
+                  onClick={openLocationPrompt}
+                  className="text-[10px] text-brand-600 font-bold hover:underline"
+                >
+                  Change Location &rarr;
+                </button>
+              </div>
+            </Popup>
+          </Marker>
+        )}
+
+        {/* Civic Issue Markers */}
         {issues.map((issue) => {
           if (!issue.latitude || !issue.longitude) return null;
 

@@ -63,39 +63,39 @@ export function LoginPage() {
 
   return (
     <AppShell showFooter={false}>
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 bg-slate-100">
-        <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-card p-8 space-y-6">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md rounded-2xl border border-purple-100 dark:border-purple-900/40 shadow-xl p-8 space-y-6 transition-colors">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-brand-600 text-white flex items-center justify-center mx-auto shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center mx-auto shadow-md shadow-violet-500/20">
               <Shield className="w-6 h-6" />
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900">Welcome Back</h1>
-            <p className="text-xs text-slate-500">Sign in to your CivicPulse account to manage reports</p>
+            <h1 className="text-2xl font-extrabold text-purple-950 dark:text-white">Welcome Back</h1>
+            <p className="text-xs text-purple-700/80 dark:text-purple-300/80">Sign in to your CivicPulse account to manage reports</p>
           </div>
 
           {/* Quick Demo Credentials Switcher */}
-          <div className="p-3 bg-brand-50 rounded-xl border border-brand-200 text-xs space-y-2">
-            <div className="flex items-center gap-1 font-bold text-brand-900">
-              <UserCheck className="w-4 h-4 text-brand-600" />
+          <div className="p-3 bg-violet-50/80 dark:bg-violet-950/40 rounded-xl border border-violet-200 dark:border-violet-800/60 text-xs space-y-2">
+            <div className="flex items-center gap-1 font-bold text-violet-900 dark:text-violet-200">
+              <UserCheck className="w-4 h-4 text-violet-600 dark:text-violet-400" />
               <span>Quick Demo Preset Login:</span>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => handleQuickPreset('CITIZEN')}
-                className="p-2 bg-white hover:bg-brand-100 rounded-lg border border-brand-200 text-brand-800 font-semibold text-left text-[11px]"
+                className="p-2 bg-white dark:bg-purple-900/60 hover:bg-violet-100 dark:hover:bg-purple-900 rounded-lg border border-violet-200 dark:border-violet-700 text-violet-800 dark:text-violet-200 font-semibold text-left text-[11px] transition"
               >
                 Jane Citizen
-                <span className="block text-[10px] text-slate-500 font-normal">citizen@civicpulse.org</span>
+                <span className="block text-[10px] text-purple-600 dark:text-purple-400 font-normal">citizen@civicpulse.org</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleQuickPreset('ADMIN')}
-                className="p-2 bg-white hover:bg-amber-100 rounded-lg border border-amber-200 text-amber-900 font-semibold text-left text-[11px]"
+                className="p-2 bg-white dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/60 rounded-lg border border-amber-200 dark:border-amber-700 text-amber-900 dark:text-amber-200 font-semibold text-left text-[11px] transition"
               >
                 Alex Rivera (Admin)
-                <span className="block text-[10px] text-slate-500 font-normal">admin@civicpulse.org</span>
+                <span className="block text-[10px] text-amber-600 dark:text-amber-400 font-normal">admin@civicpulse.org</span>
               </button>
             </div>
           </div>
@@ -124,9 +124,9 @@ export function LoginPage() {
             </Button>
           </form>
 
-          <div className="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <div className="text-center text-xs text-purple-700/80 dark:text-purple-300/80 pt-2 border-t border-purple-100 dark:border-purple-900/30">
             Don't have an account?{' '}
-            <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700 underline">
+            <Link to="/register" className="font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 underline">
               Register as Citizen
             </Link>
           </div>

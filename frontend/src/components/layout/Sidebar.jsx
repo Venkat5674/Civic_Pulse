@@ -41,18 +41,18 @@ export function Sidebar() {
   const navItems = isAdmin ? adminNav : citizenNav;
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 shrink-0 hidden md:flex flex-col justify-between min-h-[calc(100vh-4rem)] p-4">
+    <aside className="w-64 bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md border-r border-purple-200/80 dark:border-purple-900/40 shrink-0 hidden md:flex flex-col justify-between min-h-[calc(100vh-4rem)] p-4 transition-colors">
       <div className="space-y-6">
         {/* User Card */}
-        <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-3">
+        <div className="p-3 bg-purple-50/80 dark:bg-purple-950/40 rounded-xl border border-purple-200/80 dark:border-purple-800/50 flex items-center gap-3">
           <img
             src={user?.avatarUrl}
             alt={user?.name}
-            className="w-10 h-10 rounded-full object-cover border border-slate-300 shrink-0"
+            className="w-10 h-10 rounded-full object-cover ring-2 ring-violet-300 dark:ring-violet-700 shrink-0"
           />
           <div className="truncate">
-            <h4 className="text-sm font-bold text-slate-900 truncate">{user?.name}</h4>
-            <span className="text-xs font-semibold text-brand-600 bg-brand-50 px-2 py-0.5 rounded uppercase">
+            <h4 className="text-sm font-bold text-purple-950 dark:text-white truncate">{user?.name}</h4>
+            <span className="text-xs font-semibold text-violet-700 dark:text-violet-300 bg-violet-100 dark:bg-violet-950/80 px-2 py-0.5 rounded uppercase border border-violet-200/50 dark:border-violet-800/50">
               {user?.role}
             </span>
           </div>
@@ -60,7 +60,7 @@ export function Sidebar() {
 
         {/* Navigation list */}
         <div className="space-y-1">
-          <p className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
+          <p className="px-3 text-[11px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 mb-2">
             {isAdmin ? 'Administration Portal' : 'Citizen Workspace'}
           </p>
 
@@ -73,10 +73,10 @@ export function Sidebar() {
                 to={item.path}
                 end={item.path === '/admin' || item.path === '/dashboard'}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
+                  `flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition ${
                     isActive
-                      ? 'bg-brand-50 text-brand-700 font-bold border border-brand-200'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      ? 'bg-violet-600 text-white dark:bg-violet-600 dark:text-white font-bold shadow-xs'
+                      : 'text-purple-800 dark:text-purple-200 hover:bg-purple-100/70 dark:hover:bg-purple-950/60 hover:text-purple-950 dark:hover:text-white'
                   }`
                 }
               >
@@ -95,8 +95,8 @@ export function Sidebar() {
         </div>
       </div>
 
-      <div className="pt-4 border-t border-slate-100">
-        <p className="text-[11px] text-slate-400 text-center font-medium">
+      <div className="pt-4 border-t border-purple-100 dark:border-purple-900/30">
+        <p className="text-[11px] text-purple-600/70 dark:text-purple-400/70 text-center font-medium">
           CivicPulse Engine • v1.0.0
         </p>
       </div>

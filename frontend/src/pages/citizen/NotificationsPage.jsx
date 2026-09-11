@@ -12,10 +12,10 @@ export function NotificationsPage() {
   return (
     <CitizenLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200/60 dark:border-midnight-800">
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-900">Notification Center</h1>
-            <p className="text-xs text-slate-500 mt-1">
+            <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Notification Center</h1>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Real-time updates regarding your reported issues and municipal responses
             </p>
           </div>
@@ -25,17 +25,17 @@ export function NotificationsPage() {
               onClick={markAllAsRead}
               variant="outline"
               size="sm"
-              leftIcon={<CheckCheck className="w-4 h-4 text-emerald-600" />}
+              leftIcon={<CheckCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
             >
               Mark All as Read
             </Button>
           )}
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-card divide-y divide-slate-100 overflow-hidden">
+        <div className="bg-white dark:bg-midnight-850/90 rounded-2xl border border-slate-200/80 dark:border-midnight-700/80 shadow-md dark:shadow-2xl divide-y divide-slate-100 dark:divide-midnight-800/60 overflow-hidden backdrop-blur-xl transition-all">
           {notifications.length === 0 ? (
-            <div className="p-12 text-center text-slate-400 space-y-2">
-              <Bell className="w-8 h-8 mx-auto" />
+            <div className="p-12 text-center text-slate-400 dark:text-slate-500 space-y-2">
+              <Bell className="w-8 h-8 mx-auto text-slate-400 dark:text-slate-500" />
               <p className="text-sm font-semibold">You have no notifications yet.</p>
             </div>
           ) : (
@@ -44,26 +44,30 @@ export function NotificationsPage() {
                 key={notif.id}
                 onClick={() => markAsRead(notif.id)}
                 className={`p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer transition ${
-                  !notif.readAt ? 'bg-brand-50/50 hover:bg-brand-50' : 'hover:bg-slate-50'
+                  !notif.readAt
+                    ? 'bg-brand-50/50 dark:bg-brand-950/40 hover:bg-brand-50 dark:hover:bg-brand-950/60'
+                    : 'hover:bg-slate-50/80 dark:hover:bg-midnight-800/50'
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <div
                     className={`p-2.5 rounded-xl shrink-0 ${
-                      !notif.readAt ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400'
+                      !notif.readAt
+                        ? 'bg-brand-600 text-white shadow-xs'
+                        : 'bg-slate-100 dark:bg-midnight-800 text-slate-400 dark:text-slate-500'
                     }`}
                   >
                     <Bell className="w-5 h-5" />
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-slate-900">{notif.title}</h4>
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white">{notif.title}</h4>
                       {!notif.readAt && (
                         <span className="w-2 h-2 rounded-full bg-rose-500" title="Unread" />
                       )}
                     </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">{notif.message}</p>
-                    <span className="text-[10px] text-slate-400 font-mono block">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{notif.message}</p>
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono block">
                       {notif.createdAt
                         ? formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true })
                         : ''}

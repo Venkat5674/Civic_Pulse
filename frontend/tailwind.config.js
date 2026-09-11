@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -19,6 +20,33 @@ export default {
           800: '#3730a3',
           900: '#312e81',
           950: '#1e1b4b',
+        },
+        lavender: {
+          50: '#fdfbfe',
+          100: '#f8f2fe',
+          200: '#f1e5fd',
+          300: '#e5d0fa',
+          400: '#d1b0f5',
+          500: '#b884ee',
+          600: '#9b54e3',
+          700: '#7c3aed',
+          800: '#6528cb',
+          900: '#5220a7',
+          950: '#2d1847',
+        },
+        midnight: {
+          950: '#080612',
+          900: '#0f0c1e',
+          850: '#16122c',
+          800: '#1f183c',
+          700: '#2f2459',
+          600: '#46357e',
+          500: '#6b52b7',
+          400: '#a78bfa',
+          300: '#c4b5fd',
+          200: '#ddd6fe',
+          100: '#ede9fe',
+          50: '#f5f3ff',
         },
         civic: {
           surface: '#f8fafc',
@@ -40,3 +68,4 @@ export default {
   },
   plugins: [],
 }
+

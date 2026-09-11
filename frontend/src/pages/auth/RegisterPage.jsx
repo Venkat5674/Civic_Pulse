@@ -51,14 +51,14 @@ export function RegisterPage() {
 
   return (
     <AppShell showFooter={false}>
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 bg-slate-100">
-        <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-card p-8 space-y-6">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md rounded-2xl border border-purple-100 dark:border-purple-900/40 shadow-xl p-8 space-y-6 transition-colors">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-brand-600 text-white flex items-center justify-center mx-auto shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center mx-auto shadow-md shadow-violet-500/20">
               <Shield className="w-6 h-6" />
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900">Create Citizen Account</h1>
-            <p className="text-xs text-slate-500">Join CivicPulse to report and track municipal infrastructure issues</p>
+            <h1 className="text-2xl font-extrabold text-purple-950 dark:text-white">Create Citizen Account</h1>
+            <p className="text-xs text-purple-700/80 dark:text-purple-300/80">Join CivicPulse to report and track municipal infrastructure issues</p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -102,9 +102,9 @@ export function RegisterPage() {
             </Button>
           </form>
 
-          <div className="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <div className="text-center text-xs text-purple-700/80 dark:text-purple-300/80 pt-2 border-t border-purple-100 dark:border-purple-900/30">
             Already have an account?{' '}
-            <Link to="/login" className="font-bold text-brand-600 hover:text-brand-700 underline">
+            <Link to="/login" className="font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 underline">
               Sign In
             </Link>
           </div>

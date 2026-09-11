@@ -41,10 +41,10 @@ export function AdminCategoriesPage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200/60 dark:border-midnight-800">
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-900">Manage Issue Categories</h1>
-            <p className="text-xs text-slate-500 mt-1">
+            <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Manage Issue Categories</h1>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Configure active municipal problem categories and set priority weight multipliers.
             </p>
           </div>
@@ -56,18 +56,21 @@ export function AdminCategoriesPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {categories.map((cat) => (
-            <div key={cat.id} className="p-5 bg-white rounded-xl border border-slate-200 shadow-card space-y-3">
+            <div
+              key={cat.id}
+              className="p-5 bg-white dark:bg-midnight-850/90 rounded-2xl border border-slate-200/80 dark:border-midnight-700/80 shadow-md dark:shadow-2xl space-y-3.5 backdrop-blur-xl hover:-translate-y-0.5 transition-all duration-200"
+            >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-2.5 py-0.5 rounded">
+                <span className="text-xs font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/80 px-2.5 py-0.5 rounded-full border border-brand-200/60 dark:border-brand-800/60">
                   Weight: {cat.priorityWeight}x
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-200/60 dark:border-emerald-800/60">
                   ACTIVE
                 </span>
               </div>
 
-              <h3 className="text-base font-bold text-slate-900">{cat.name}</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">{cat.description}</p>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">{cat.name}</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{cat.description}</p>
             </div>
           ))}
         </div>

@@ -39,17 +39,17 @@ export function AdminAnalyticsPage() {
   return (
     <AdminLayout>
       <div className="space-y-8">
-        <div>
-          <h1 className="text-2xl font-extrabold text-slate-900">Platform Analytics & Intelligence</h1>
-          <p className="text-xs text-slate-500 mt-1">
+        <div className="pb-2 border-b border-slate-200/60 dark:border-midnight-800">
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Platform Analytics & Intelligence</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Geospatial issue volume, category distributions, and resolution velocity metrics.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Status Pie Chart */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-card space-y-4">
-            <h3 className="text-base font-bold text-slate-900">Current Queue Status Distribution</h3>
+          <div className="bg-white dark:bg-midnight-850/90 p-6 rounded-2xl border border-slate-200/80 dark:border-midnight-700/80 shadow-md dark:shadow-2xl space-y-4 backdrop-blur-xl transition-all">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">Current Queue Status Distribution</h3>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -73,13 +73,13 @@ export function AdminAnalyticsPage() {
           </div>
 
           {/* Category Bar Chart */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-card space-y-4">
-            <h3 className="text-base font-bold text-slate-900">Issues Count by Category</h3>
+          <div className="bg-white dark:bg-midnight-850/90 p-6 rounded-2xl border border-slate-200/80 dark:border-midnight-700/80 shadow-md dark:shadow-2xl space-y-4 backdrop-blur-xl transition-all">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">Issues Count by Category</h3>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={stats?.categoryDistribution || []}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="name" stroke="#64748b" fontSize={10} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
+                  <XAxis dataKey="name" stroke="#94a3b8" fontSize={10} />
                   <YAxis stroke="#94a3b8" fontSize={12} />
                   <Tooltip />
                   <Bar dataKey="count" fill="#4f46e5" radius={[6, 6, 0, 0]} />

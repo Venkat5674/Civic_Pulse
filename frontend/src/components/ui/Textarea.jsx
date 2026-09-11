@@ -7,7 +7,7 @@ export const Textarea = forwardRef(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label htmlFor={areaId} className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+          <label htmlFor={areaId} className="block text-xs font-semibold uppercase tracking-wider text-purple-900 dark:text-purple-200">
             {label}
           </label>
         )}
@@ -15,13 +15,13 @@ export const Textarea = forwardRef(
           id={areaId}
           ref={ref}
           rows={rows}
-          className={`w-full rounded-lg border bg-white p-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 disabled:bg-slate-50 disabled:text-slate-500 ${
-            error ? 'border-rose-500 focus:ring-rose-500 focus:border-rose-500' : 'border-slate-300'
+          className={`w-full rounded-lg border bg-white/90 dark:bg-purple-950/60 p-3 text-sm text-purple-950 dark:text-purple-100 placeholder:text-purple-400/80 transition focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 disabled:bg-purple-100 disabled:text-purple-500 ${
+            error ? 'border-rose-500 focus:ring-rose-500 focus:border-rose-500' : 'border-purple-200 dark:border-purple-800'
           } ${className}`}
           {...props}
         />
-        {error && <p className="text-xs text-rose-600 font-medium">{error}</p>}
-        {!error && helperText && <p className="text-xs text-slate-500">{helperText}</p>}
+        {error && <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{error}</p>}
+        {!error && helperText && <p className="text-xs text-purple-700/70 dark:text-purple-300/70">{helperText}</p>}
       </div>
     );
   }

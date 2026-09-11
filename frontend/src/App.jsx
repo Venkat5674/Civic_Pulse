@@ -2,22 +2,28 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'sonner';
 
+import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { IssueProvider } from './context/IssueContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { AppRoutes } from './routes';
 
-export default function App() {
+export function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <IssueProvider>
-          <NotificationProvider>
-            <Toaster position="top-right" richColors closeButton />
-            <AppRoutes />
-          </NotificationProvider>
-        </IssueProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <IssueProvider>
+            <NotificationProvider>
+              <Toaster position="top-right" richColors closeButton />
+              <AppRoutes />
+            </NotificationProvider>
+          </IssueProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }
+
+export default App;
+

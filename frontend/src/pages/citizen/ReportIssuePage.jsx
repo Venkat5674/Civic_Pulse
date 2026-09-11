@@ -38,7 +38,7 @@ const step1Schema = z.object({
 
 export function ReportIssuePage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, userLocation } = useAuth();
   const { categories, issues, reloadData } = useIssues();
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -50,9 +50,9 @@ export function ReportIssuePage() {
     title: '',
     description: '',
     severity: 'MEDIUM',
-    latitude: 37.774929,
-    longitude: -122.419416,
-    address: '401 Main St, Downtown Civic Area',
+    latitude: userLocation?.lat || 37.774929,
+    longitude: userLocation?.lng || -122.419416,
+    address: userLocation?.address || '401 Main St, Downtown Civic Area',
     images: [],
   });
 
@@ -126,18 +126,18 @@ export function ReportIssuePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
         {/* Header */}
         <div className="space-y-1 text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold">
-            <PlusCircle className="w-4 h-4" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-950/80 text-violet-800 dark:text-violet-300 border border-violet-200 dark:border-violet-800 text-xs font-bold">
+            <PlusCircle className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             <span>Civic Issue Dispatcher</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-slate-900">Report a Civic Problem</h1>
-          <p className="text-xs text-slate-500">
+          <h1 className="text-3xl font-extrabold text-purple-950 dark:text-white">Report a Civic Problem</h1>
+          <p className="text-xs text-purple-700/80 dark:text-purple-300/80">
             Follow the 4-step wizard to report infrastructure hazards to Metro City officials.
           </p>
         </div>
 
         {/* 4-Step Stepper Progress Bar */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md p-4 rounded-xl border border-purple-100 dark:border-purple-900/40 shadow-sm flex items-center justify-between transition-colors">
           {[
             { step: 1, label: 'Details' },
             { step: 2, label: 'Location' },
@@ -149,31 +149,31 @@ export function ReportIssuePage() {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center font-extrabold text-xs transition ${
                     currentStep === item.step
-                      ? 'bg-brand-600 text-white ring-4 ring-brand-100'
+                      ? 'bg-violet-600 text-white ring-4 ring-violet-200 dark:ring-violet-900'
                       : currentStep > item.step
                       ? 'bg-emerald-600 text-white'
-                      : 'bg-slate-100 text-slate-400'
+                      : 'bg-purple-100 dark:bg-purple-950/60 text-purple-400 dark:text-purple-500'
                   }`}
                 >
                   {currentStep > item.step ? <CheckCircle2 className="w-4 h-4" /> : item.step}
                 </div>
                 <span
                   className={`text-xs font-bold hidden sm:inline ${
-                    currentStep === item.step ? 'text-slate-900' : 'text-slate-400'
+                    currentStep === item.step ? 'text-purple-950 dark:text-white' : 'text-purple-400 dark:text-purple-500'
                   }`}
                 >
                   {item.label}
                 </span>
               </div>
-              {idx < 3 && <div className="flex-1 h-0.5 bg-slate-200 mx-2 hidden sm:block" />}
+              {idx < 3 && <div className="flex-1 h-0.5 bg-purple-200 dark:bg-purple-900/40 mx-2 hidden sm:block" />}
             </React.Fragment>
           ))}
         </div>
 
         {/* STEP 1: Details */}
         {currentStep === 1 && (
-          <form onSubmit={handleSubmit(handleStep1Submit)} className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-card space-y-6">
-            <h2 className="text-lg font-bold text-slate-900 pb-3 border-b border-slate-100">
+          <form onSubmit={handleSubmit(handleStep1Submit)} className="bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-purple-100 dark:border-purple-900/40 shadow-card space-y-6 transition-colors">
+            <h2 className="text-lg font-bold text-purple-950 dark:text-white pb-3 border-b border-purple-100 dark:border-purple-900/30">
               Step 1: Issue Details & Severity
             </h2>
 
@@ -207,7 +207,7 @@ export function ReportIssuePage() {
               <option value="CRITICAL">CRITICAL — Urgent emergency or severe damage risk</option>
             </Select>
 
-            <div className="flex justify-end pt-4 border-t border-slate-100">
+            <div className="flex justify-end pt-4 border-t border-purple-100 dark:border-purple-900/30">
               <Button type="submit" rightIcon={<ArrowRight className="w-4 h-4" />}>
                 Proceed to Location
               </Button>
@@ -217,8 +217,8 @@ export function ReportIssuePage() {
 
         {/* STEP 2: Interactive Location Map Picker */}
         {currentStep === 2 && (
-          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-card space-y-6">
-            <h2 className="text-lg font-bold text-slate-900 pb-3 border-b border-slate-100">
+          <div className="bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-purple-100 dark:border-purple-900/40 shadow-card space-y-6 transition-colors">
+            <h2 className="text-lg font-bold text-purple-950 dark:text-white pb-3 border-b border-purple-100 dark:border-purple-900/30">
               Step 2: Select Exact Location on Map
             </h2>
 
@@ -236,7 +236,7 @@ export function ReportIssuePage() {
               height="380px"
             />
 
-            <div className="flex justify-between pt-4 border-t border-slate-100">
+            <div className="flex justify-between pt-4 border-t border-purple-100 dark:border-purple-900/30">
               <Button onClick={() => setCurrentStep(1)} variant="outline" leftIcon={<ArrowLeft className="w-4 h-4" />}>
                 Back to Details
               </Button>
@@ -249,13 +249,13 @@ export function ReportIssuePage() {
 
         {/* STEP 3: Photo Evidence Upload */}
         {currentStep === 3 && (
-          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-card space-y-6">
-            <h2 className="text-lg font-bold text-slate-900 pb-3 border-b border-slate-100">
+          <div className="bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-purple-100 dark:border-purple-900/40 shadow-card space-y-6 transition-colors">
+            <h2 className="text-lg font-bold text-purple-950 dark:text-white pb-3 border-b border-purple-100 dark:border-purple-900/30">
               Step 3: Attach Photo Evidence
             </h2>
 
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-slate-300 hover:border-brand-500 bg-slate-50 p-8 rounded-2xl text-center transition cursor-pointer relative">
+              <div className="border-2 border-dashed border-purple-200 dark:border-purple-800/60 hover:border-violet-500 bg-purple-50/50 dark:bg-purple-950/40 p-8 rounded-2xl text-center transition cursor-pointer relative">
                 <input
                   type="file"
                   multiple
@@ -263,15 +263,15 @@ export function ReportIssuePage() {
                   onChange={handleImageUpload}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
-                <Upload className="w-10 h-10 text-slate-400 mx-auto mb-2" />
-                <h4 className="text-sm font-bold text-slate-900">Drag and drop photo files or click to browse</h4>
-                <p className="text-xs text-slate-500 mt-1">Supports JPG, PNG, WEBP (Max 5MB per file)</p>
+                <Upload className="w-10 h-10 text-violet-500 mx-auto mb-2" />
+                <h4 className="text-sm font-bold text-purple-950 dark:text-purple-100">Drag and drop photo files or click to browse</h4>
+                <p className="text-xs text-purple-700/70 dark:text-purple-300/70 mt-1">Supports JPG, PNG, WEBP (Max 5MB per file)</p>
               </div>
 
               {formData.images.length > 0 && (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
                   {formData.images.map((img, idx) => (
-                    <div key={idx} className="relative group h-32 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
+                    <div key={idx} className="relative group h-32 rounded-xl overflow-hidden bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800">
                       <img src={img} alt="Evidence Upload" className="w-full h-full object-cover" />
                       <button
                         onClick={() => removeImage(idx)}
@@ -286,7 +286,7 @@ export function ReportIssuePage() {
               )}
             </div>
 
-            <div className="flex justify-between pt-4 border-t border-slate-100">
+            <div className="flex justify-between pt-4 border-t border-purple-100 dark:border-purple-900/30">
               <Button onClick={() => setCurrentStep(2)} variant="outline" leftIcon={<ArrowLeft className="w-4 h-4" />}>
                 Back to Location
               </Button>
@@ -299,8 +299,8 @@ export function ReportIssuePage() {
 
         {/* STEP 4: Review, Duplicate Check & Final Submit */}
         {currentStep === 4 && (
-          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-card space-y-6">
-            <h2 className="text-lg font-bold text-slate-900 pb-3 border-b border-slate-100">
+          <div className="bg-white/90 dark:bg-[#120d25]/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-purple-100 dark:border-purple-900/40 shadow-card space-y-6 transition-colors">
+            <h2 className="text-lg font-bold text-purple-950 dark:text-white pb-3 border-b border-purple-100 dark:border-purple-900/30">
               Step 4: Review Summary & Submit
             </h2>
 
@@ -312,38 +312,38 @@ export function ReportIssuePage() {
               />
             )}
 
-            <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3 text-xs">
-              <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                <span className="font-bold uppercase tracking-wider text-slate-400">Category</span>
-                <span className="font-bold text-brand-700">
+            <div className="bg-purple-50/60 dark:bg-purple-950/40 p-5 rounded-xl border border-purple-200/80 dark:border-purple-800/50 space-y-3 text-xs">
+              <div className="flex justify-between items-center pb-2 border-b border-purple-200/60 dark:border-purple-800/40">
+                <span className="font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Category</span>
+                <span className="font-bold text-violet-700 dark:text-violet-300">
                   {categories.find((c) => c.id === formData.categoryId)?.name}
                 </span>
               </div>
 
               <div>
-                <span className="font-bold uppercase tracking-wider text-slate-400 block mb-1">Title</span>
-                <p className="text-slate-900 font-semibold text-sm">{formData.title}</p>
+                <span className="font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 block mb-1">Title</span>
+                <p className="text-purple-950 dark:text-white font-semibold text-sm">{formData.title}</p>
               </div>
 
               <div>
-                <span className="font-bold uppercase tracking-wider text-slate-400 block mb-1">Description</span>
-                <p className="text-slate-700 leading-relaxed">{formData.description}</p>
+                <span className="font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 block mb-1">Description</span>
+                <p className="text-purple-800/90 dark:text-purple-200 leading-relaxed">{formData.description}</p>
               </div>
 
-              <div className="flex justify-between items-center pt-2 border-t border-slate-200">
-                <span className="font-bold uppercase tracking-wider text-slate-400">Severity</span>
-                <span className="font-bold text-slate-900">{formData.severity}</span>
+              <div className="flex justify-between items-center pt-2 border-t border-purple-200/60 dark:border-purple-800/40">
+                <span className="font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Severity</span>
+                <span className="font-bold text-purple-950 dark:text-white">{formData.severity}</span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="font-bold uppercase tracking-wider text-slate-400">Location Pin</span>
-                <span className="font-mono text-slate-700">
+                <span className="font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Location Pin</span>
+                <span className="font-mono text-purple-900 dark:text-purple-200">
                   {formData.latitude.toFixed(5)}, {formData.longitude.toFixed(5)}
                 </span>
               </div>
             </div>
 
-            <div className="flex justify-between pt-4 border-t border-slate-100">
+            <div className="flex justify-between pt-4 border-t border-purple-100 dark:border-purple-900/30">
               <Button onClick={() => setCurrentStep(3)} variant="outline" leftIcon={<ArrowLeft className="w-4 h-4" />}>
                 Back to Evidence
               </Button>

@@ -18,13 +18,13 @@ export function Button({
 
   const variants = {
     primary:
-      'bg-brand-600 hover:bg-brand-700 text-white shadow-sm focus:ring-brand-500 border border-transparent',
+      'bg-brand-600 hover:bg-brand-700 dark:bg-brand-600 dark:hover:bg-brand-500 text-white shadow-sm focus:ring-brand-500 border border-transparent',
     secondary:
-      'bg-slate-900 hover:bg-slate-800 text-white shadow-sm focus:ring-slate-700 border border-transparent',
+      'bg-slate-900 hover:bg-slate-800 text-white dark:bg-midnight-800 dark:hover:bg-midnight-700 dark:text-slate-100 shadow-sm focus:ring-slate-700 border border-transparent',
     outline:
-      'bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 focus:ring-brand-500 shadow-sm',
+      'bg-white dark:bg-midnight-900/90 hover:bg-slate-50 dark:hover:bg-midnight-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-midnight-700 focus:ring-brand-500 shadow-sm',
     ghost:
-      'bg-transparent hover:bg-slate-100 text-slate-700 focus:ring-slate-400 border border-transparent',
+      'bg-transparent hover:bg-slate-100 dark:hover:bg-midnight-800/80 text-slate-700 dark:text-slate-200 focus:ring-slate-400 border border-transparent',
     danger:
       'bg-rose-600 hover:bg-rose-700 text-white shadow-sm focus:ring-rose-500 border border-transparent',
     success:
