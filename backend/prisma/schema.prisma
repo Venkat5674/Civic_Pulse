@@ -1,0 +1,214 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                 String   @id @default(uuid())
+  name               String
+  email              String   @unique
+  passwordHash       String   @map("password_hash")
+  role               String   @default("CITIZEN")
+  avatarUrl          String?  @map("avatar_url")
+  department         String?  @default("ALL") @map("department")
+  departmentId       String?  @map("department_id")
+  emailNotifications Boolean  @default(true) @map("email_notifications")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  issues           Issue[]
+  comments         Comment[]
+  confirmations    IssueConfirmation[]
+  notifications    Notification[]
+  auditLogs        AuditLog[]          @relation("ActorUser")
+  departmentRecord Department?         @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  @@map("users")
+}
+
+model Category {
+  id             String   @id @default(uuid())
+  name           String   @unique
+  slug           String   @unique
+  description    String
+  icon           String   @default("HelpCircle")
+  department     String   @default("Municipal Department") @map("department")
+  departmentId   String?  @map("department_id")
+  priorityWeight Float    @default(1.0) @map("priority_weight")
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  issues           Issue[]
+  departmentRecord Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  @@map("categories")
+}
+
+model Issue {
+  id                 String    @id @default(uuid())
+  userId             String    @map("user_id")
+  categoryId         String    @map("category_id")
+  title              String
+  description        String
+  status             String    @default("OPEN")
+  severity           String    @default("MEDIUM")
+  priorityScore      Int       @default(35) @map("priority_score")
+  latitude           Float
+  longitude          Float
+  address            String
+  isLiveCapture      Boolean   @default(true) @map("is_live_capture")
+  capturedLatitude   Float?    @map("captured_latitude")
+  capturedLongitude  Float?    @map("captured_longitude")
+  capturedAt         DateTime? @default(now()) @map("captured_at")
+  confirmationsCount Int       @default(1) @map("confirmations_count")
+  assignedDepartment String?   @default("Municipal Department") @map("assigned_department")
+  departmentId       String?   @map("department_id")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  resolvedAt         DateTime? @map("resolved_at")
+
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category      Category             @relation(fields: [categoryId], references: [id])
+  images        IssueImage[]
+  confirmations IssueConfirmation[]
+  comments      Comment[]
+  statusHistory IssueStatusHistory[]
+  notifications Notification[]
+
+  candidateDuplicates IssueDuplicate[] @relation("PrimaryIssue")
+  matchedDuplicates   IssueDuplicate[] @relation("CandidateIssue")
+  departmentRecord    Department?      @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  @@map("issues")
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  admins     User[]
+  categories Category[]
+  issues     Issue[]
+
+  @@map("departments")
+}
+
+model IssueImage {
+  id           String    @id @default(uuid())
+  issueId      String    @map("issue_id")
+  imageUrl     String    @map("image_url")
+  publicId     String?   @map("public_id")
+  isLiveCamera Boolean   @default(true) @map("is_live_camera")
+  latitude     Float?
+  longitude    Float?
+  capturedAt   DateTime? @default(now()) @map("captured_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+
+  @@map("issue_images")
+}
+
+model IssueConfirmation {
+  id        String   @id @default(uuid())
+  issueId   String   @map("issue_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, userId])
+  @@map("issue_confirmations")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  issueId   String   @map("issue_id")
+  userId    String   @map("user_id")
+  body      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model IssueStatusHistory {
+  id        String   @id @default(uuid())
+  issueId   String   @map("issue_id")
+  oldStatus String?  @map("old_status")
+  newStatus String   @map("new_status")
+  changedBy String   @map("changed_by")
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+
+  @@map("issue_status_history")
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  issueId   String?   @map("issue_id")
+  type      String
+  title     String
+  message   String
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issue Issue? @relation(fields: [issueId], references: [id], onDelete: SetNull)
+
+  @@map("notifications")
+}
+
+model IssueDuplicate {
+  id               String   @id @default(uuid())
+  issueId          String   @map("issue_id")
+  candidateIssueId String   @map("candidate_issue_id")
+  similarityScore  Int      @map("similarity_score")
+  relationType     String   @default("POTENTIAL_DUPLICATE") @map("relation_type")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  issue          Issue @relation("PrimaryIssue", fields: [issueId], references: [id], onDelete: Cascade)
+  candidateIssue Issue @relation("CandidateIssue", fields: [candidateIssueId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, candidateIssueId])
+  @@map("issue_duplicates")
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  actorUserId  String   @map("actor_user_id")
+  action       String
+  entityType   String   @map("entity_type")
+  entityId     String   @map("entity_id")
+  metadataJson String?  @map("metadata_json")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  actorUser User @relation("ActorUser", fields: [actorUserId], references: [id], onDelete: Cascade)
+
+  @@map("audit_logs")
+}
+
+model SystemSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}

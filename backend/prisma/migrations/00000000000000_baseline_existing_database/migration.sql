@@ -1,0 +1,2 @@
+-- Existing production database baseline.
+-- The schema was created before Prisma migration history was introduced.
